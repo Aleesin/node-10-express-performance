@@ -4,8 +4,15 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Server",
-      "program": "${workspaceFolder}/bin/www"
+      "name": "Launch Single Process",
+      "program": "${workspaceFolder}/bin/www-single"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Cluster",
+      "program": "${workspaceFolder}/bin/www",
+      "autoAttachChildProcesses": true
     }
   ]
 }
