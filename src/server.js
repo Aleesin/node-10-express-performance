@@ -24,6 +24,11 @@ class Server {
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(cookieParser());
     this.express.disable("x-powered-by");
+    this.express.use((request, response, next) => {
+      const used = process.memoryUsage().rss / 1024 / 1024;
+      console.log(`This program has used approximately ${used} MB`);
+      next();
+    });
   }
 
   productionSetup() {

@@ -38,8 +38,6 @@ class AppRouter {
         )
         .pipe(JSONStream.stringify())
         .pipe(response);
-      const used = process.memoryUsage().heapUsed / 1024 / 1024;
-      console.log(`The script uses approximately ${used} MB`);
     });
 
     this.router.get(
@@ -53,8 +51,6 @@ class AppRouter {
             return obj.zip_code === zipcode;
           });
           response.json(filteredResults);
-          const used = process.memoryUsage().heapUsed / 1024 / 1024;
-          console.log(`The script uses approximately ${used} MB`);
         } catch (e) {
           next(e);
         }
@@ -74,8 +70,6 @@ class AppRouter {
           )
           .pipe(JSONStream.stringify())
           .pipe(response);
-        const used = process.memoryUsage().heapUsed / 1024 / 1024;
-        console.log(`The script uses approximately ${used} MB`);
       }
     );
 
@@ -92,8 +86,6 @@ class AppRouter {
             }
           );
           response.json(filteredResults);
-          const used = process.memoryUsage().heapUsed / 1024 / 1024;
-          console.log(`The script uses approximately ${used} MB`);
         } catch (e) {
           next(e);
         }
@@ -117,8 +109,6 @@ class AppRouter {
           )
           .pipe(JSONStream.stringify())
           .pipe(response);
-        const used = process.memoryUsage().heapUsed / 1024 / 1024;
-        console.log(`The script uses approximately ${used} MB`);
       }
     );
 
@@ -139,8 +129,6 @@ class AppRouter {
             }
           );
           response.json(filteredResults);
-          const used = process.memoryUsage().heapUsed / 1024 / 1024;
-          console.log(`The script uses approximately ${used} MB`);
         } catch (e) {
           next(e);
         }
