@@ -12,22 +12,28 @@ Each end point has a `stream` version and `promise` version.
 
 ## Endpoints
 
-- `/data/small/net/stream/:speakerId`  
+- `/data/small/net/stream/:speakerId`
+
   Retrieves JSON data over the network via stream and `pipe`s to client, filtered by `speakerId`
 
-- `/data/small/disk/promise/:speakerId`  
+- `/data/small/disk/promise/:speakerId`
+
   Retrieves JSON data over the network via a Promise, then sends to client, filtered by `speakerId`
 
-- `/data/small/disk/stream/:speakerId`  
+- `/data/small/disk/stream/:speakerId`
+
   Retrieves JSON data from disk via stream and `pipe`s to client, filtered by `speakerId`
 
-- `/data/small/disk/promise/:speakerId`  
+- `/data/small/disk/promise/:speakerId`
+
   Retrieves JSON data from disk via a Promise, then sends to client, filtered by `speakerId`
 
 - `/data/large/stream/:zipcode`
+
   Retrieves 2~ GB JSON dataset over the network via stream and `pipe`s to client, filtered by `zipcode`
 
 - `/data/large/promise/:zipcode`
+
   Retrieves 2~ GB JSON dataset over the network via a Promise,then sends to client, filtered by `zipcode`
 
 # Benchmark Results
