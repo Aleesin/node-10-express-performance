@@ -52,7 +52,7 @@ if (cluster.isMaster) {
   const port = normalizePort(process.env.PORT || "3000");
   app.set("port", port);
 
-  const host = process.env.HOST || "0.0.0.0";
+  const host = process.env.HOST || "127.0.0.1";
 
   /**
    * Event listener for HTTP server "error" event.
