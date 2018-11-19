@@ -1,8 +1,40 @@
 # Node 10 Performance Benchmarks
 
-Benchmarking performance metrics with Express.js in Node.js version 10
+Benchmarking performance metrics with [Express.js](https://github.com/expressjs/express) in Node.js version 10
 
-### Small JSON Stream (Over Network)
+Benchmarks are measured with [wrk](https://github.com/wg/wrk).
+
+## Overview
+
+There are six GET endpoints. All endpoints pull from a JSON source, filter the JSON by a parameter in the endpoint, and return the resulting set.
+
+Each end point has a `stream` version and `promise` version.
+
+## Endpoints
+
+- `/data/small/net/stream/:speakerId`  
+  Retrieves JSON data over the network via stream and `pipe`s to client, filtered by `speakerId`
+
+- `/data/small/disk/promise/:speakerId`  
+  Retrieves JSON data over the network via a Promise, then sends to client, filtered by `speakerId`
+
+- `/data/small/disk/stream/:speakerId`  
+  Retrieves JSON data from disk via stream and `pipe`s to client, filtered by `speakerId`
+
+- `/data/small/disk/promise/:speakerId`  
+  Retrieves JSON data from disk via a Promise, then sends to client, filtered by `speakerId`
+
+- `/data/large/stream/:zipcode`
+  Retrieves 2~ GB JSON dataset over the network via stream and `pipe`s to client, filtered by `zipcode`
+
+- `/data/large/promise/:zipcode`
+  Retrieves 2~ GB JSON dataset over the network via a Promise,then sends to client, filtered by `zipcode`
+
+# Benchmark Results
+
+## Small JSON Over Network
+
+### Stream:
 
 `wrk -t12 -c400 -d45s http://localhost:3000/data/small/net/stream/spk_1`
 
@@ -11,14 +43,14 @@ Running 45s test @ http://localhost:3000/data/small/net/stream/spk_1
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec     1.81      3.17    20.00     88.08%
-  160 requests in 45.09s, 104.53MB read
-  Socket errors: connect 0, read 305, write 4, timeout 160
-Requests/sec:      3.55
-Transfer/sec:      2.32MB
+    Req/Sec     3.93      5.09    30.00     86.72%
+  291 requests in 45.07s, 100.25MB read
+  Socket errors: connect 0, read 125, write 0, timeout 291
+Requests/sec:      6.46
+Transfer/sec:      2.22MB
 ```
 
-### Small JSON Promises (Over Network)
+### Promises:
 
 `wrk -t12 -c400 -d45s http://localhost:3000/data/small/net/promise/spk_1`
 
@@ -27,30 +59,34 @@ Running 45s test @ http://localhost:3000/data/small/net/promise/spk_1
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec     2.16      3.21    10.00     86.31%
-  174 requests in 45.08s, 41.04MB read
-  Socket errors: connect 0, read 251, write 0, timeout 174
-Requests/sec:      3.86
-Transfer/sec:      0.91MB
+    Req/Sec     1.54      2.91    19.00     90.38%
+  243 requests in 45.09s, 57.32MB read
+  Socket errors: connect 0, read 483, write 0, timeout 243
+Requests/sec:      5.39
+Transfer/sec:      1.27MB
 ```
 
-### Small JSON Stream (On Disk)
+## Small JSON On Disk
 
-`wrk -t12 -c400 -d45s http://localhost:3000/data/small/stream/disk/spk_1`
+### Stream
+
+`wrk -t12 -c400 -d45s http://localhost:3000/data/small/disk/stream/spk_1`
 
 ```
 Running 45s test @ http://localhost:3000/data/small/disk/stream/spk_1
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec    10.09      9.44    60.00     76.54%
-  772 requests in 45.10s, 254.88MB read
-  Socket errors: connect 0, read 33, write 11, timeout 772
-Requests/sec:     17.12
-Transfer/sec:      5.65MB
+    Req/Sec     6.57     25.10   126.00     92.86%
+  316 requests in 45.10s, 116.97MB read
+  Socket errors: connect 0, read 361, write 0, timeout 316
+Requests/sec:      7.01
+Transfer/sec:      2.59MB
 ```
 
-### Small JSON Promises (On Disk)
+**Memory Consumed:** `730 MB`
+
+### Promises
 
 `wrk -t12 -c400 -d45s http://localhost:3000/data/small/disk/promise/spk_1`
 
@@ -58,14 +94,31 @@ Transfer/sec:      5.65MB
 Running 45s test @ http://localhost:3000/data/small/disk/promise/spk_1
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     1.25s   200.71ms   1.93s    81.95%
-    Req/Sec     8.35      6.65    50.00     75.50%
-  2806 requests in 45.11s, 661.88MB read
-  Socket errors: connect 0, read 220, write 0, timeout 2396
-Requests/sec:     62.21
-Transfer/sec:     14.67MB
+    Latency     1.41s   328.43ms   1.98s    58.82%
+    Req/Sec     5.45      5.20    30.00     82.42%
+  1175 requests in 45.06s, 277.16MB read
+  Socket errors: connect 0, read 400, write 0, timeout 1141
+Requests/sec:     26.08
+Transfer/sec:      6.15MB
 ```
 
-### Large JSON Stream
+**Memory Consumed:** `450 MB`
 
-### Large JSON Promises
+## Large JSON Over Network
+
+### Stream
+
+### Promises
+
+# Running HTTP Server
+
+There are two executables in the `bin` directory:
+
+- `www` - runs the server in a [cluster](https://nodejs.org/api/cluster.html#cluster_cluster) of processes
+- `www-single` - runs the server in a single process
+
+# Documentation
+
+There is a `.paw` and `postman.json` file to run example requests in the `docs` directory.
+
+Routes are also defined in `/src/routes/AppRouter.js`
