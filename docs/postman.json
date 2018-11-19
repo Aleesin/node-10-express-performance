@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "endpoints.paw",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "version": "v0.0.0"
+  },
+  "item": [
+    {
+      "name": "/",
+      "item": [
+        {
+          "name": "Base",
+          "request": {
+            "url": "http://localhost:3000/",
+            "method": "GET"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data/large/stream/19106",
+      "item": [
+        {
+          "name": "Data Stream - Large",
+          "request": {
+            "url": "http://localhost:3000/data/large/stream/19106",
+            "method": "GET"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data/small/net/stream/spk_1",
+      "item": [
+        {
+          "name": "Data Stream - Small Net",
+          "request": {
+            "url": "http://localhost:3000/data/small/net/stream/spk_1",
+            "method": "GET"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data/small/disk/stream/spk_1",
+      "item": [
+        {
+          "name": "Data Stream - Small Disk",
+          "request": {
+            "url": "http://localhost:3000/data/small/disk/stream/spk_1",
+            "method": "GET"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data/large/promise/19106",
+      "item": [
+        {
+          "name": "Data - Promise Large",
+          "request": {
+            "url": "http://localhost:3000/data/large/promise/19106",
+            "method": "GET"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data/small/disk/promise/spk_1",
+      "item": [
+        {
+          "name": "Data - Promise Small Disk",
+          "request": {
+            "url": "http://localhost:3000/data/small/disk/promise/spk_1",
+            "method": "GET"
+          }
+        },
+        {
+          "name": "Data - Promise Small Net",
+          "request": {
+            "url": "http://localhost:3000/data/small/disk/promise/spk_1",
+            "method": "GET"
+          }
+        }
+      ]
+    }
+  ]
+}
