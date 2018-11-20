@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const {Router} = require("express");
 const fetch = require("node-fetch");
 const request = require("request");
 const JSONStream = require("JSONStream");
@@ -29,7 +29,6 @@ class AppRouter {
   data() {
     this.router.get("/data/large/stream/:zipcode", (req, response, next) => {
       const zipcode = req.params.zipcode;
-      response.header("Content-Type", "application/json");
       request(largeJsonUrl)
         .pipe(
           JSONStream.parse("rows.*", item => {
@@ -61,7 +60,6 @@ class AppRouter {
       "/data/small/net/stream/:speaker",
       (req, response, next) => {
         const speaker = req.params.speaker;
-        response.header("Content-Type", "application/json");
         request(smallJsonUrl)
           .pipe(
             JSONStream.parse("results.speaker_labels.segments.*", item => {
@@ -96,7 +94,6 @@ class AppRouter {
       "/data/small/disk/stream/:speaker",
       (req, response, next) => {
         const speaker = req.params.speaker;
-        response.header("Content-Type", "application/json");
 
         const readStream = fs.createReadStream(
           __dirname + "/../../data/0002-Art-Of-The-Take.json"
@@ -120,7 +117,9 @@ class AppRouter {
           const readFilePromise = util.promisify(fs.readFile);
           const jsonData = await readFilePromise(
             __dirname + "/../../data/0002-Art-Of-The-Take.json",
-            { encoding: "utf-8" }
+            {
+              encoding: "utf-8"
+            }
           );
           const json = JSON.parse(jsonData);
           const filteredResults = json.results.speaker_labels.segments.filter(

@@ -21,12 +21,17 @@ class Server {
 
   middleware() {
     this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(bodyParser.urlencoded({extended: false}));
     this.express.use(cookieParser());
     this.express.disable("x-powered-by");
     this.express.use((request, response, next) => {
-      const used = process.memoryUsage().rss / 1024 / 1024;
-      console.log(`This program has used approximately ${used} MB`);
+      response.header("Content-Type", "application/json");
+      next();
+    });
+    this.express.use((request, response, next) => {
+      const heapUsedInMb = process.memoryUsage().heapUsed / 1024 / 1024;
+      const rssInMb = process.memoryUsage().rss / 1024 / 1024;
+      console.log({heapUsedInMb, rssInMb});
       next();
     });
   }
@@ -58,7 +63,7 @@ class Server {
       // send error
       response
         .status(error.status || 500)
-        .send({ error: response.locals.error.message });
+        .send({error: response.locals.error.message});
     });
   }
 }
