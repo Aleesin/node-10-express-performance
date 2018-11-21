@@ -4,6 +4,7 @@ const express = require("express");
 const logger = require("morgan");
 
 const AppRouter = require("./routes/AppRouter");
+const Router = new AppRouter().router;
 
 class Server {
   constructor() {
@@ -28,23 +29,17 @@ class Server {
       response.header("Content-Type", "application/json");
       next();
     });
-    this.express.use((request, response, next) => {
-      const heapUsedInMb = process.memoryUsage().heapUsed / 1024 / 1024;
-      const rssInMb = process.memoryUsage().rss / 1024 / 1024;
-      console.log({heapUsedInMb, rssInMb});
-      next();
-    });
   }
 
   productionSetup() {
-    // this.isProd()
-    //   ? this.express.use(logger("combined"))
-    //   : this.express.use(logger("dev"));
+    this.isProd()
+      ? this.express.use(logger("combined"))
+      : this.express.use(logger("dev"));
     this.express.set("trust proxy", this.isProd());
   }
 
   routes() {
-    this.express.use("/", new AppRouter().router);
+    this.express.use("/", Router);
   }
 
   noRouteErrorHandling() {
