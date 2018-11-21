@@ -1,14 +1,21 @@
 const {Router} = require("express");
 const fetch = require("node-fetch");
-const request = require("request");
 const JSONStream = require("JSONStream");
 const fs = require("fs");
 const util = require("util");
+const pump = require("pump");
 
 const largeJsonUrl =
   "https://s3.amazonaws.com/philadelphia-parking-violations-raw-data/parking_violations_2017.json";
 const smallJsonUrl =
   "https://s3.amazonaws.com/the-art-of-the-take/0002-Art-Of-The-Take.json";
+
+const parseSpeakers = speaker =>
+  JSONStream.parse("results.speaker_labels.segments.*", item => {
+    return item.speaker_label === speaker ? item : null;
+  });
+
+const readFilePromise = util.promisify(fs.readFile);
 
 class AppRouter {
   constructor() {
@@ -27,17 +34,27 @@ class AppRouter {
   }
 
   data() {
-    this.router.get("/data/large/stream/:zipcode", (req, response, next) => {
-      const zipcode = req.params.zipcode;
-      request(largeJsonUrl)
-        .pipe(
-          JSONStream.parse("rows.*", item => {
-            return item.zip_code === zipcode ? item : null;
+    this.router.get(
+      "/data/large/stream/:zipcode",
+      (request, response, next) => {
+        const zipcode = request.params.zipcode;
+        fetch(largeJsonUrl)
+          .then(res => {
+            const parse = JSONStream.parse("rows.*", item => {
+              return item.zip_code === zipcode ? item : null;
+            });
+            pump(res.body, parse, JSONStream.stringify(), response, error => {
+              if (error) {
+                return next(error);
+              }
+            });
           })
-        )
-        .pipe(JSONStream.stringify())
-        .pipe(response);
-    });
+          .catch(e => {
+            e.status = 503;
+            return next(e);
+          });
+      }
+    );
 
     this.router.get(
       "/data/large/promise/:zipcode",
@@ -51,23 +68,33 @@ class AppRouter {
           });
           response.json(filteredResults);
         } catch (e) {
-          next(e);
+          return next(e);
         }
       }
     );
 
     this.router.get(
       "/data/small/net/stream/:speaker",
-      (req, response, next) => {
-        const speaker = req.params.speaker;
-        request(smallJsonUrl)
-          .pipe(
-            JSONStream.parse("results.speaker_labels.segments.*", item => {
-              return item.speaker_label === speaker ? item : null;
-            })
-          )
-          .pipe(JSONStream.stringify())
-          .pipe(response);
+      (request, response, next) => {
+        const speaker = request.params.speaker;
+        fetch(smallJsonUrl)
+          .then(res => {
+            pump(
+              res.body,
+              parseSpeakers(speaker),
+              JSONStream.stringify(),
+              response,
+              error => {
+                if (error) {
+                  return next(error);
+                }
+              }
+            );
+          })
+          .catch(e => {
+            e.status = 503;
+            return next(e);
+          });
       }
     );
 
@@ -85,7 +112,8 @@ class AppRouter {
           );
           response.json(filteredResults);
         } catch (e) {
-          next(e);
+          e.status = 503;
+          return next(e);
         }
       }
     );
@@ -94,18 +122,20 @@ class AppRouter {
       "/data/small/disk/stream/:speaker",
       (req, response, next) => {
         const speaker = req.params.speaker;
-
         const readStream = fs.createReadStream(
           __dirname + "/../../data/0002-Art-Of-The-Take.json"
         );
-        readStream
-          .pipe(
-            JSONStream.parse("results.speaker_labels.segments.*", item => {
-              return item.speaker_label === speaker ? item : null;
-            })
-          )
-          .pipe(JSONStream.stringify())
-          .pipe(response);
+        pump(
+          readStream,
+          parseSpeakers(speaker),
+          JSONStream.stringify(),
+          response,
+          error => {
+            if (error) {
+              return next(error);
+            }
+          }
+        );
       }
     );
 
@@ -114,7 +144,6 @@ class AppRouter {
       async (request, response, next) => {
         try {
           const speaker = request.params.speaker;
-          const readFilePromise = util.promisify(fs.readFile);
           const jsonData = await readFilePromise(
             __dirname + "/../../data/0002-Art-Of-The-Take.json",
             {
@@ -129,6 +158,7 @@ class AppRouter {
           );
           response.json(filteredResults);
         } catch (e) {
+          e.status = 503;
           next(e);
         }
       }
