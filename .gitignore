@@ -63,3 +63,9 @@ typings/
 build
 
 .DS_Store
+
+# Clinic
+*.clinic-doctor.*
+*.clinic-doctor-*
+*.clinic-bubbleprof-*
+*.clinic-bubbleprof-*
