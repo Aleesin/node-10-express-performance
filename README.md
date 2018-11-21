@@ -42,73 +42,69 @@ Each end point has a `stream` version and `promise` version.
 
 ### Stream:
 
-`wrk -t12 -c400 -d45s http://localhost:3000/data/small/net/stream/spk_1`
+`wrk -t12 -c200 -d60s http://localhost:3000/data/small/net/stream/spk_1`
 
 ```
-Running 45s test @ http://localhost:3000/data/small/net/stream/spk_1
-  12 threads and 400 connections
+Running 1m test @ http://localhost:3000/data/small/net/stream/spk_1
+  12 threads and 200 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec     3.93      5.09    30.00     86.72%
-  291 requests in 45.07s, 100.25MB read
-  Socket errors: connect 0, read 125, write 0, timeout 291
-Requests/sec:      6.46
-Transfer/sec:      2.22MB
+    Req/Sec     3.00      4.33    30.00     82.81%
+  483 requests in 1.00m, 117.06MB read
+  Socket errors: connect 0, read 116, write 0, timeout 483
+Requests/sec:      8.04
+Transfer/sec:      1.95MB
 ```
 
 ### Promises:
 
-`wrk -t12 -c400 -d45s http://localhost:3000/data/small/net/promise/spk_1`
+`wrk -t12 -c200 -d60s http://localhost:3000/data/small/net/promise/spk_1`
 
 ```
-Running 45s test @ http://localhost:3000/data/small/net/promise/spk_1
-  12 threads and 400 connections
+Running 1m test @ http://localhost:3000/data/small/net/promise/spk_1
+  12 threads and 200 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec     1.54      2.91    19.00     90.38%
-  243 requests in 45.09s, 57.32MB read
-  Socket errors: connect 0, read 483, write 0, timeout 243
-Requests/sec:      5.39
-Transfer/sec:      1.27MB
+    Latency   993.92ms  323.81ms   1.50s    64.71%
+    Req/Sec     3.81      4.32    40.00     79.53%
+  1241 requests in 1.00m, 293.15MB read
+  Socket errors: connect 0, read 133, write 0, timeout 1224
+Requests/sec:     20.65
+Transfer/sec:      4.88MB
 ```
 
 ## Small JSON On Disk
 
 ### Stream
 
-`wrk -t12 -c400 -d45s http://localhost:3000/data/small/disk/stream/spk_1`
+`wrk -t12 -c200 -d60s http://localhost:3000/data/small/disk/stream/spk_1`
 
 ```
-Running 45s test @ http://localhost:3000/data/small/disk/stream/spk_1
-  12 threads and 400 connections
+Running 1m test @ http://localhost:3000/data/small/disk/stream/spk_1
+  12 threads and 200 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
     Latency     0.00us    0.00us   0.00us     nan%
-    Req/Sec     6.57     25.10   126.00     92.86%
-  316 requests in 45.10s, 116.97MB read
-  Socket errors: connect 0, read 361, write 0, timeout 316
-Requests/sec:      7.01
-Transfer/sec:      2.59MB
+    Req/Sec    10.67     26.31   130.00     85.71%
+  429 requests in 1.00m, 135.70MB read
+  Socket errors: connect 0, read 125, write 0, timeout 429
+Requests/sec:      7.14
+Transfer/sec:      2.26MB
 ```
-
-**Memory Consumed:** `730 MB`
 
 ### Promises
 
-`wrk -t12 -c400 -d45s http://localhost:3000/data/small/disk/promise/spk_1`
+`wrk -t12 -c200 -d60s http://localhost:3000/data/small/disk/promise/spk_1`
 
 ```
-Running 45s test @ http://localhost:3000/data/small/disk/promise/spk_1
-  12 threads and 400 connections
+Running 1m test @ http://localhost:3000/data/small/disk/promise/spk_1
+  12 threads and 200 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     1.41s   328.43ms   1.98s    58.82%
-    Req/Sec     5.45      5.20    30.00     82.42%
-  1175 requests in 45.06s, 277.16MB read
-  Socket errors: connect 0, read 400, write 0, timeout 1141
-Requests/sec:     26.08
-Transfer/sec:      6.15MB
+    Latency     1.54s   268.01ms   1.98s    60.00%
+    Req/Sec     6.69      5.80    30.00     76.39%
+  1533 requests in 1.00m, 361.61MB read
+  Socket errors: connect 0, read 127, write 0, timeout 1503
+Requests/sec:     25.51
+Transfer/sec:      6.02MB
 ```
-
-**Memory Consumed:** `450 MB`
 
 ## Large JSON Over Network
 
