@@ -69,3 +69,5 @@ build
 *.clinic-doctor-*
 *.clinic-bubbleprof-*
 *.clinic-bubbleprof-*
+
+phila_parking_violations_2017.json

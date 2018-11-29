@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const pump = require("pump");
+const request = require("request");
+
+const dataFilePath = __dirname + "/../data/phila_parking_violations_2017.json";
+
+const run = () => {
+  const jsonStream = request(
+    "https://s3.amazonaws.com/philadelphia-parking-violations-raw-data/parking_violations_2017.json"
+  );
+
+  let contentTotal;
+  let currentProgress = 0;
+  jsonStream.on("response", res => {
+    contentTotal = res.headers["content-length"];
+    process.stdout.write("Downloading data to " + dataFilePath);
+    process.stdout.write("\n");
+  });
+
+  jsonStream.on("data", chunk => {
+    currentProgress = currentProgress + chunk.length;
+    const progress = currentProgress / contentTotal;
+    process.stdout.write(
+      "Download Progress: " + parseInt(progress * 100) + "%" + "\r"
+    );
+  });
+
+  const fileStream = fs.createWriteStream(dataFilePath);
+
+  pump(jsonStream, fileStream, error => {
+    if (error) {
+      console.log(error.message);
+      process.exit(-1);
+    }
+    process.stdout.write("\n");
+    process.stdout.write("Download complete! \n");
+  });
+};
+
+run();
