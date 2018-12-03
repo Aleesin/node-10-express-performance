@@ -11,7 +11,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Cluster",
-      "program": "${workspaceFolder}/bin/www",
+      "program": "${workspaceFolder}/bin/www-cluster",
       "autoAttachChildProcesses": true
     }
   ]
