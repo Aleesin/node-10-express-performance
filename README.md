@@ -6,17 +6,15 @@ Benchmarks are measured with [wrk](https://github.com/wg/wrk).
 
 ## Overview
 
-`data` endpoints pull from a JSON file, filter the JSON by a parameter in the endpoint, and return the resulting set.
+- `data` endpoints pull from a JSON file, filter the JSON by a parameter in the endpoint, and return the resulting set.
 
-`proxy` endpoints return the full JSON file.
+- `proxy` endpoints return the full JSON file.
 
-Each end point has a `stream` version and `promise` version.
+- Each end point has a `stream` version and `promise` version.
 
-All endpoints are `GET`s.
+- All endpoints are `GET`s.
 
-There is a `.paw` and `postman.json` file to run example requests in the `docs` directory.
-
-Routes are defined in [`/src/routes/AppRouter.js`](https://github.com/MattMorgis/node-10-express-performance/blob/master/src/routes/AppRouter.js)
+- Routes are defined in [`/src/routes/AppRouter.js`](https://github.com/MattMorgis/node-10-express-performance/blob/master/src/routes/AppRouter.js)
 
 ## Endpoints
 
@@ -51,6 +49,8 @@ $ node bin/download-large-data
 ```
 $ npm start
 ```
+
+There is a `.paw` and `postman.json` file to run example requests in the `docs` directory.
 
 ## Running with node-clinic
 
