@@ -16,17 +16,17 @@ All endpoints are `GET`s.
 
 ## Endpoints
 
-| Endpoint                    | File Size                  | Description                                                                   | Method                                               |
-| --------------------------- | -------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `/`                         | Returns `pid` and `uptime` |
-| `/data/large/stream/19103`  | `200mb`                    | Returns 2017 Philadelphia parking violations for specificed zipcode.          | Uses `createReadStream` and `JSONStream`             |
-| `/data/large/promise/19103` | `200mb`                    | Returns 2017 Philadelphia parking violations for specificed zipcode.          | Uses `fs.readFile` and `JSON.parse()` and `filter()` |
-| `/data/small/stream/spk_1`  | `4mb`                      | Returns all of the segments for specified speaker from podcast transcription. | Uses `createReadStream` and `JSONStream`             |
-| `/data/small/promise/spk_1` | `4mb`                      | Returns all of the segments for specified speaker from podcast transcription. | Uses `fs.readFile` and `JSON.parse()` and `filter()` |
-| `/proxy/large/stream/`      | `200mb`                    | Returns 2017 Philadelphia parking violations.                                 | Uses `createReadStream`                              |
-| `/proxy/large/promise/`     | `200mb`                    | Returns 2017 Philadelphia parking violations.                                 | Uses `fs.readFile`                                   |
-| `/proxy/small/stream/`      | `4mb`                      | Returns all of the segments for all speakers from podcast transcription.      | Uses `createReadStream`                              |
-| `/proxy/small/promise/`     | `4mb`                      | Returns all of the segments for all speakers from podcast transcription.      | Uses `fs.readFile`                                   |
+| Endpoint                    | File Size | Description                                                                   | Method                                               |
+| --------------------------- | --------- | ----------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `/`                         |           | Returns `pid` and `uptime`                                                    |
+| `/data/large/stream/19103`  | `200mb`   | Returns 2017 Philadelphia parking violations for specificed zipcode.          | Uses `createReadStream` and `JSONStream`             |
+| `/data/large/promise/19103` | `200mb`   | Returns 2017 Philadelphia parking violations for specificed zipcode.          | Uses `fs.readFile` and `JSON.parse()` and `filter()` |
+| `/data/small/stream/spk_1`  | `4mb`     | Returns all of the segments for specified speaker from podcast transcription. | Uses `createReadStream` and `JSONStream`             |
+| `/data/small/promise/spk_1` | `4mb`     | Returns all of the segments for specified speaker from podcast transcription. | Uses `fs.readFile` and `JSON.parse()` and `filter()` |
+| `/proxy/large/stream/`      | `200mb`   | Returns 2017 Philadelphia parking violations.                                 | Uses `createReadStream`                              |
+| `/proxy/large/promise/`     | `200mb`   | Returns 2017 Philadelphia parking violations.                                 | Uses `fs.readFile`                                   |
+| `/proxy/small/stream/`      | `4mb`     | Returns all of the segments for all speakers from podcast transcription.      | Uses `createReadStream`                              |
+| `/proxy/small/promise/`     | `4mb`     | Returns all of the segments for all speakers from podcast transcription.      | Uses `fs.readFile`                                   |
 
 # Running HTTP Server
 
