@@ -14,6 +14,10 @@ Each end point has a `stream` version and `promise` version.
 
 All endpoints are `GET`s.
 
+There is a `.paw` and `postman.json` file to run example requests in the `docs` directory.
+
+Routes are defined in [`/src/routes/AppRouter.js`](https://github.com/MattMorgis/node-10-express-performance/blob/master/src/routes/AppRouter.js)
+
 ## Endpoints
 
 | Endpoint                    | File Size | Description                                                                   | Method                                               |
@@ -28,12 +32,12 @@ All endpoints are `GET`s.
 | `/proxy/small/stream/`      | `4mb`     | Returns all of the segments for all speakers from podcast transcription.      | Uses `createReadStream`                              |
 | `/proxy/small/promise/`     | `4mb`     | Returns all of the segments for all speakers from podcast transcription.      | Uses `fs.readFile`                                   |
 
-# Running HTTP Server
+## Running HTTP Server
 
 There are three executables in the `bin` directory:
 
-- `www` - runs the server in a [cluster](https://nodejs.org/api/cluster.html#cluster_cluster) of processes
-- `www-single` - runs the server in a single process
+- `www-cluster` - runs the server in a [cluster](https://nodejs.org/api/cluster.html#cluster_cluster) of processes
+- `www-single` - runs the server in a single process. `node-clinic` needs the server to run in a single process.
 - `download-large-data` - Downloads dataset that was too large to check into git.
 
 ```
@@ -45,15 +49,23 @@ $ node bin/download-large-data
 ```
 
 ```
-$ node bin/wwww
+$ npm start
 ```
 
-# Documentation
+## Running with node-clinic
 
-There is a `.paw` and `postman.json` file to run example requests in the `docs` directory.
+[`node-clinic`](https://github.com/nearform/node-clinic) was used to watch CPU and memory usage, along with other metrics, during benchmarking.
 
-Routes are also defined in `/src/routes/AppRouter.js`
-
-```
+Install with
 
 ```
+npm install -g clinic
+```
+
+Have `clinic` run and monitor our server
+
+```
+clinic doctor -- node bin/www-single
+```
+
+Then run one of the following benchmark commands below.
