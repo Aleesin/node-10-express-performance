@@ -6,9 +6,13 @@ Benchmarks are measured with [wrk](https://github.com/wg/wrk).
 
 ## Overview
 
-There are six GET endpoints. All endpoints pull from a JSON source, filter the JSON by a parameter in the endpoint, and return the resulting set.
+`data` endpoints pull from a JSON file, filter the JSON by a parameter in the endpoint, and return the resulting set.
+
+`proxy` endpoints return the full JSON file.
 
 Each end point has a `stream` version and `promise` version.
+
+All endpoints are `GET`s.
 
 ## Endpoints
 
