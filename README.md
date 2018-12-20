@@ -69,3 +69,5 @@ clinic doctor -- node bin/www-single
 ```
 
 Then run one of the following benchmark commands below.
+
+## Benchmarking
